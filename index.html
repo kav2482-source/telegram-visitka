@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Критически важный тег для работы в Telegram -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>ИП Капустин А.В. - Ремонт электроники и услуги ателье в Оренбурге</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;
+            color: #eee;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            word-wrap: break-word;
+        }
+        
+        /* НОВЫЕ СТИЛИ ДЛЯ ТЕЛЕГРАМ ИНТЕГРАЦИИ */
+        .tg-close-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .tg-close-btn.visible {
+            display: flex;
+        }
+        
+        .tg-header {
+            display: none;
+            padding: 15px;
+            background: linear-gradient(90deg, rgba(30, 60, 114, 0.9) 0%, rgba(42, 82, 152, 0.9) 100%);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .tg-header.visible {
+            display: block;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        
+        header {
+            background: linear-gradient(90deg, rgba(30, 60, 114, 0.9) 0%, rgba(42, 82, 152, 0.9) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            width: 100%;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: #4facfe;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        
+        .logo-text span {
+            color: #4facfe;
+        }
+        
+        .contact-header {
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        
+        .contact-header a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 5px;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .contact-header a:hover {
+            color: #4facfe;
+            transform: scale(1.05);
+        }
+        
+        .header-phones {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
+        .whatsapp-link {
+            color: #25D366 !important;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        
+        .whatsapp-link:hover {
+            color: #3af082 !important;
+            transform: scale(1.1);
+        }
+        
+        .hero {
+            background: 
+                linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            margin: 20px 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: white;
+            padding: 0 15px;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: rgba(255,255,255,0.9);
+            padding: 0 15px;
+            word-break: break-word;
+        }
+        
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+        }
+        
+        .service-icon {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            font-size: 3rem;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .service-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .service-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #2a5298;
+            word-break: break-word;
+        }
+        
+        .service-content ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            flex-grow: 1;
+            width: 100%;
+        }
+        
+        .service-content li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            word-break: break-word;
+        }
+        
+        .service-content li i {
+            color: #1e3c72;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .service-contact {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: auto;
+            font-weight: 600;
+            color: #1e3c72;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            width: 100%;
+        }
+        
+        .service-contact a {
+            color: #1e3c72;
+            text-decoration: none;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .service-contact a:hover {
+            color: #25D366;
+            transform: scale(1.05);
+        }
+        
+        .service-contact .fa-whatsapp {
+            color: #25D366;
+            transition: all 0.3s;
+        }
+        
+        .service-contact a:hover .fa-whatsapp {
+            color: #3af082;
+        }
+        
+        .business-card-section {
+            margin-top: 30px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .business-card-section h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            word-break: break-word;
+            padding: 0 15px;
+        }
+        
+        .business-card-section h2:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 2px;
+        }
+        
+        .business-card-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin: 0;
+            width: 100%;
+        }
+        
+        .business-card-image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .business-card-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            height: auto;
+        }
+        
+        .business-card-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .about-section {
+            background: transparent;
+            border-radius: 15px;
+            padding: 0;
+            margin: 50px 0;
+            color: #333;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .about-section h2 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            word-break: break-word;
+            padding: 0 15px;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            width: 100%;
+        }
+        
+        .about-text, .advantages {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            word-break: break-word;
+        }
+        
+        .advantages {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .advantage-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0;
+            flex: 1;
+            min-height: 0;
+        }
+        
+        .advantage-item:not(:last-child) {
+            margin-bottom: 15px;
+        }
+        
+        .ruble-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .advantage-item i {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .advantage-text h3 {
+            color: #2a5298;
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+        
+        .advantage-text p {
+            word-break: break-word;
+            margin-bottom: 0;
+        }
+        
+        footer {
+            background: linear-gradient(90deg, rgba(30, 60, 114, 0.9) 0%, rgba(42, 82, 152, 0.9) 100%);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            backdrop-filter: blur(5px);
+            width: 100%;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+            align-items: flex-start;
+            width: 100%;
+        }
+        
+        .footer-section {
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            word-break: break-word;
+        }
+        
+        .footer-section h3:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #4facfe;
+        }
+        
+        .footer-links {
+            list-style: none;
+            flex-grow: 1;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            word-break: break-word;
+        }
+        
+        .footer-links a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        .footer-links a:hover {
+            color: #4facfe;
+            padding-left: 5px;
+        }
+        
+        .footer-contact {
+            flex-grow: 1;
+        }
+        
+        .footer-contact .contact-item {
+            color: #e0e0e0;
+            margin-bottom: 15px;
+        }
+        
+        .hours-section .contact-item {
+            margin-bottom: 18px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+            word-break: break-word;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: #1e3c72;
+        }
+        
+        .btn-contacts {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+        
+        .btn-contacts:hover {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+        }
+        
+        .map-section {
+            margin: 50px 0;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .map-section h2 {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            word-break: break-word;
+            padding: 0 15px;
+        }
+        
+        .map-section h2:after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 2px;
+        }
+        
+        .map-wrapper {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+            margin: 30px 0;
+            position: relative;
+            height: 500px;
+            background-color: #f0f5ff;
+            background-image: 
+                linear-gradient(rgba(42, 82, 152, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 82, 152, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .map-content {
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+        }
+        
+        .map-content h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            word-break: break-word;
+        }
+        
+        .map-content p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            word-break: break-word;
+        }
+        
+        .coordinates {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            color: #333;
+            word-break: break-word;
+        }
+        
+        .coordinates span {
+            color: #1e3c72;
+            font-weight: 600;
+        }
+        
+        .map-link {
+            margin-top: 20px;
+            display: inline-block;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .contact-header {
+                align-items: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .advantages {
+                display: block;
+            }
+            
+            .advantage-item {
+                margin-bottom: 20px;
+                flex: none;
+            }
+            
+            .advantage-item:not(:last-child) {
+                margin-bottom: 20px;
+            }
+            
+            .header-phones {
+                justify-content: center;
+                margin-top: 10px;
+            }
+            
+            .map-wrapper {
+                height: 450px;
+                padding: 15px;
+            }
+            
+            .map-content {
+                padding: 25px 15px;
+            }
+            
+            .map-content h3 {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+            
+            .map-content p {
+                font-size: 1.05rem;
+                margin-bottom: 25px;
+            }
+            
+            .coordinates {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .footer-section {
+                min-height: auto;
+            }
+            
+            .tg-close-btn {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .map-wrapper {
+                height: 500px;
+            }
+            
+            .map-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            .map-content p {
+                font-size: 1rem;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .contact-header a {
+                font-size: 1.1rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        footer .phone-link {
+            color: white !important;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        footer .phone-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid white;
+            transform: none;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .service-card-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .atelier-card {
+            grid-column: 1 / 3;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .atelier-card .service-card-container {
+            width: 100%;
+            max-width: calc(50% - 15px);
+        }
+        
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .atelier-card {
+                grid-column: 1 / 2;
+            }
+            
+            .atelier-card .service-card-container {
+                max-width: 100%;
+            }
+        }
+
+        .footer-section .contact-item {
+            display: flex;
+            align-items: center;
+            min-height: 45px;
+            margin-bottom: 12px;
+            gap: 15px;
+        }
+
+        .footer-section .contact-item i {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .footer-section .contact-item i:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(79, 172, 254, 0.7);
+        }
+
+        .footer-section .contact-item span {
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .footer-section .fa-map-marker-alt {
+            font-size: 1.0rem;
+        }
+        
+        .phone-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 45px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .phone-row .contact-item {
+            min-height: auto;
+            margin-bottom: 0;
+        }
+
+        .whatsapp-icon {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .whatsapp-icon i {
+            background: none !important;
+            width: auto;
+            height: auto;
+            display: inline;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .whatsapp-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 12px rgba(37, 211, 102, 0.7);
+        }
+        
+        .phone-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            white-space: nowrap;
+            line-height: 1.4;
+            margin-top: 2px;
+        }
+        
+        section {
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        
+        h2 {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Специальный заголовок для Telegram -->
+    <div class="tg-header" id="tgHeader">
+        ИП Капустин - Ремонт и ателье в Оренбурге
+    </div>
+    
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <div class="logo-text">ИП <span>Капустин</span></div>
+            </div>
+            <div class="contact-header">
+                <div>Ремонт электроники и ателье в Оренбурге</div>
+                <div class="header-phones">
+                    <a href="tel:+79878477677"><i class="fas fa-phone"></i> +79878477677</a>
+                    <a href="https://wa.me/79878477677" target="_blank" class="whatsapp-link">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Профессиональный<br>ремонт электроники<br>и ателье</h1>
+            <p>Качественный ремонт компьютеров, ноутбуков, телефонов и другой техники. Раскрой, пошив и ремонт одежды в Оренбурге. Работаем для вас с 2010 года.</p>
+            <div>
+                <a href="#services" class="btn">Наши услуги</a>
+                <a href="#contacts" class="btn btn-contacts">Контакты</a>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div id="services">
+            <div class="services-grid">
+                <div class="service-card-container">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-laptop-medical"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Ремонт электроники</h3>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Компьютеры и ноутбуки</li>
+                                <li><i class="fas fa-check-circle"></i> Смартфоны и планшеты</li>
+                                <li><i class="fas fa-check-circle"></i> Игровые приставки</li>
+                                <li><i class="fas fa-check-circle"></i> Телевизоры и мониторы</li>
+                                <li><i class="fas fa-check-circle"></i> Оргтехника</li>
+                                <li><i class="fas fa-check-circle"></i> Замена комплектующих</li>
+                            </ul>
+                            <div class="service-contact">
+                                <a href="tel:+79878477677"><i class="fas fa-phone"></i> +79878477677</a>
+                                <a href="https://wa.me/79878477677" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="service-card-container">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Скупка техники</h3>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> Скупка ноутбуков</li>
+                                <li><i class="fas fa-check-circle"></i> Скупка компьютеров</li>
+                                <li><i class="fas fa-check-circle"></i> Телефоны и планшеты</li>
+                                <li><i class="fas fa-check-circle"></i> Комплектующие</li>
+                                <li><i class="fas fa-check-circle"></i> Оценка по фото</li>
+                                <li><i class="fas fa-check-circle"></i> Выгодные условия</li>
+                            </ul>
+                            <div class="service-contact">
+                                <a href="tel:+79878477677"><i class="fas fa-phone"></i> +79878477677</a>
+                                <a href="https://wa.me/79878477677" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="atelier-card">
+                    <div class="service-card-container">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-tshirt"></i>
+                            </div>
+                            <div class="service-content">
+                                <h3>Ателье</h3>
+                                <ul>
+                                    <li><i class="fas fa-check-circle"></i> Ремонт одежды</li>
+                                    <li><i class="fas fa-check-circle"></i> Раскрой и пошив</li>
+                                    <li><i class="fas fa-check-circle"></i> Корректировка размеров</li>
+                                    <li><i class="fas fa-check-circle"></i> Замена фурнитуры</li>
+                                    <li><i class="fas fa-check-circle"></i> Ремонт сумок</li>
+                                    <li><i class="fas fa-check-circle"></i> Срочные услуги</li>
+                                </ul>
+                                <div class="service-contact">
+                                    <a href="tel:+79198525765"><i class="fas fa-phone"></i> +79198525765</a>
+                                    <a href="https://wa.me/79198525765" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="business-card-section">
+                <h2>Наша визитка</h2>
+                <div class="business-card-wrapper">
+                    <div class="business-card-image-container">
+                        <img src="https://i.ibb.co/wN6dQfsV/fqlmlvqo.png" 
+                             alt="Визитка Ремонт" 
+                             class="business-card-image">
+                    </div>
+                    
+                    <div class="business-card-image-container">
+                        <img src="https://i.ibb.co/QFxHM9rn/psoa0w1i.png" 
+                             alt="Визитка Пошив" 
+                             class="business-card-image">
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <section class="map-section" id="map">
+            <h2>Как нас найти</h2>
+            <div class="map-wrapper">
+                <div class="map-content">
+                    <h3><i class="fas fa-map-marker-alt"></i> Наше местоположение</h3>
+                    <p>Мы находимся по адресу: г. Оренбург, ул. Краснознаменная, 27</p>
+                    <div class="coordinates">
+                        <i class="fas fa-map-pin"></i> Координаты: 
+                        <span>55.101626, 51.765861</span>
+                    </div>
+                    <div class="map-link">
+                        <a href="https://yandex.ru/maps/48/orenburg/?l=stv%2Csta&ll=55.101410%2C51.765482&panorama%5Bdirection%5D=164.332961%2C-2.830011&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=55.101626%2C51.765861&panorama%5Bspan%5D=77.642224%2C31.767741&z=19" 
+                           target="_blank" class="btn">
+                            <i class="fas fa-external-link-alt"></i> Открыть карту на Яндекс.Картах
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="about-section">
+            <h2>О нашей компании</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>ИП Капустин Андрей Викторович предоставляет профессиональные услуги по ремонту электроники и услуги ателье в Оренбурге с 2010 года.</p>
+                    <p>Наш сервисный центр специализируется на ремонте всех видов электроники: от компьютеров и ноутбуков до смартфонов и планшетов. Мы используем только качественные комплектующие и современное оборудование.</p>
+                    <p>Ателье предлагает полный спектр услуг по ремонту и пошиву одежды. Наши мастера помогут вам с раскроем, подгонкой по фигуре, ремонтом любой сложности.</p>
+                    <p>Также мы осуществляем скупку б/у ноутбуков и компьютеров для разбора на запчасти.</p>
+                </div>
+                <div class="advantages">
+                    <div class="advantage-item">
+                        <i class="fas fa-medal"></i>
+                        <div class="advantage-text">
+                            <h3>Гарантия качества</h3>
+                            <p>На все работы предоставляем гарантию до 1 месяца</p>
+                        </div>
+                    </div>
+                    <div class="advantage-item">
+                        <i class="fas fa-user-tie"></i>
+                        <div class="advantage-text">
+                            <h3>Опытные мастера</h3>
+                            <p>Специалисты с опытом работы от 5 лет</p>
+                        </div>
+                    </div>
+                    <div class="advantage-item">
+                        <i class="fas fa-bolt"></i>
+                        <div class="advantage-text">
+                            <h3>Срочный ремонт</h3>
+                            <p>Выполняем срочные заказы в течение дня</p>
+                        </div>
+                    </div>
+                    <div class="advantage-item">
+                       <div class="ruble-icon">₽</div>
+                       <div class="advantage-text">
+                       <h3>Доступные цены</h3>
+                       <p>Предлагаем разумные цены без наценок</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer id="contacts">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Наши услуги</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Ремонт компьютеров</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Ремонт ноутбуков</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Ремонт телефонов</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Ремонт планшетов</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Скупка техники</a></li>
+                        <li><a href="#"><i class="fas fa-caret-right"></i> Услуги ателье</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section footer-contact">
+                    <h3>Контакты</h3>
+                                       
+                    <div class="phone-row">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79878477677" class="phone-link">+79878477677</a>
+                        </div>
+                        <a href="https://wa.me/79878477677" target="_blank" class="whatsapp-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <span class="phone-label">(Ремонт)</span>
+                    </div>
+                    
+                    <div class="phone-row">
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+79198525765" class="phone-link">+79198525765</a>
+                        </div>
+                        <a href="https://wa.me/79198525765" target="_blank" class="whatsapp-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <span class="phone-label">(Ателье)</span>
+                    </div>
+                      
+                     <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>г. Оренбург, ул. Краснознаменная, 27</span>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:kav2482@mail.ru" class="phone-link">kav2482@mail.ru</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section hours-section">
+                    <h3>Часы работы</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Ремонт: Пн-ПТ: 10:00 - 18:00</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Ателье: Пн-ПТ: 10:00 - 16:00</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Суббота и Воскресенье: выходной</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-car"></i>
+                        <span>Возможен выезд мастера</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 ИП Капустин Андрей Викторович. Все права защищены.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Кнопка закрытия для Telegram -->
+    <button class="tg-close-btn" id="tgCloseBtn">
+        <i class="fas fa-times"></i>
+    </button>
+    
+    <script>
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Обновление года в футере
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            document.querySelector('.copyright').innerHTML = `&copy; ${currentYear} ИП Капустин Андрей Викторович. Все права защищены.`;
+            
+            // Проверяем, открыты ли мы в Telegram WebApp
+            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+                // Расширяем приложение на весь экран
+                Telegram.WebApp.expand();
+                
+                // Показываем кнопку закрытия
+                document.getElementById('tgCloseBtn').classList.add('visible');
+                
+                // Показываем специальный заголовок для Telegram
+                document.getElementById('tgHeader').classList.add('visible');
+                
+                // Добавляем обработчик для кнопки закрытия
+                document.getElementById('tgCloseBtn').addEventListener('click', function() {
+                    Telegram.WebApp.close();
+                });
+                
+                // Можно также использовать данные пользователя Telegram, если нужно
+                // const user = Telegram.WebApp.initDataUnsafe.user;
+                // if (user) {
+                //   console.log(user);
+                // }
+            }
+        });
+    </script>
+</body>
+</html>
